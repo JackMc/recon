@@ -1,0 +1,13 @@
+<h1><%= @scan.description %></h1>
+
+<h2>Scan metadata</h2>
+
+<ul>
+  <% @scan.metadata.each do |k,v| %>
+    <li><%= k %>: <%= v %></li>
+  <% end %>
+</ul>
+
+<%= render partial: @scan.type.underscore %>
+
+<%= link_to 'Edit', edit_target_scan_url(@target, @scan) %>

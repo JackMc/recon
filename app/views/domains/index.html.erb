@@ -1,0 +1,7 @@
+<ul>
+<% @domains.each do |domain| %>
+  <li><%= link_to domain.fqdn, target_domain_url(@target, domain) %></li>
+<% end %>
+</ul>
+
+<%= button_to 'New', new_target_domain_path(@target), method: :get %>

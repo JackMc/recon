@@ -1,0 +1,19 @@
+<h1><%= @target.name %></h1>
+
+<p>
+<%= link_to 'Edit', edit_target_url(@target) %>
+<%= link_to 'Scans', target_scans_path(@target) %>
+<%= link_to 'Run HTTP liveliness scan on domains', http_liveliness_scan_target_url(@target), method: :post %>
+</p>
+
+<p><%= @target.description %></p>
+
+<%= button_to "New Domain", new_target_domain_path(@target), method: :get %>
+
+<h2>Root (manually entered) domains</h2>
+
+<%= render partial: 'domain_list', locals: { domains: @target.manually_entered_domains } %>
+
+<h2>Automatically determined (scanned) domains</h2>
+
+<%= render partial: 'domain_list', locals: { domains: @target.automated_domains } %>

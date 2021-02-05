@@ -1,0 +1,7 @@
+<ul>
+<% @scans.each do |scan| %>
+  <li><%= link_to scan.description, target_scan_url(@target, scan) %> (<%= scan.created_at %>)</li>
+<% end %>
+</ul>
+
+<%= button_to 'New', new_target_scan_path(@target), method: :get %>

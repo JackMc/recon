@@ -1,0 +1,5 @@
+<%= form_with model: @target do |form| %>
+  <p><%= form.text_field :name, placeholder: 'Name' %></p>
+  <p><%= form.text_field :description, placeholder: 'Description' %></p>
+  <p><%= form.submit %></p>
+<% end %>

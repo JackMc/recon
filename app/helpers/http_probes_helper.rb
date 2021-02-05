@@ -1,0 +1,2 @@
+module HttpProbesHelper
+end

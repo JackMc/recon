@@ -1,5 +1,22 @@
+require 'sidekiq/web'
+
 # frozen_string_literal: true
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :targets
+  resources :targets do
+    member do
+      post :http_liveliness_scan
+    end
+
+    resources :scans
+
+    resources :http_probes
+
+    resources :domains do
+      member do
+        post :enumerate_subdomains
+      end
+    end
+  end
+
+  mount Sidekiq::Web => "/sidekiq"
 end

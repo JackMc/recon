@@ -1,0 +1,5 @@
+<% domains.each do |domain| %>
+<ul>
+  <li><%= domain.fqdn %> (<%= domain.source %>, <%= link_to 'Edit', edit_target_domain_url(@target, domain) %>, <%= link_to 'Enumerate subdomains', enumerate_subdomains_target_domain_path(@target, domain), method: :post %>, <%= link_to 'Delete', target_domain_path(@target, domain), method: :delete %>)</li>
+</ul>
+<% end %>

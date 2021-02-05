@@ -1,0 +1,4 @@
+<%= form_with model: [@target, @domain] do |form| %>
+  <p><%= form.text_field :fqdn, placeholder: 'Domain name (e.x. shopify.com)' %></p>
+  <p><%= form.submit %></p>
+<% end %>

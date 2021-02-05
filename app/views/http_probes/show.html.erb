@@ -1,0 +1,28 @@
+<h2>HTTP Probe for domain <%= @http_probe.domain.fqdn %> on target <%= @target.name %></h2>
+
+<ul>
+<% if @http_probe.failed %>
+  <ul>Failed to make contact: <%= @http_probe.failure_reason %></ul>
+<% else %>
+  <ul>Response status: <%= @http_probe.status_code %> <%= @http_probe.status_name %></ul>
+  <ul>Response URL: <%= @http_probe.url %></ul>
+  <ul>HTTPS: <%= @http_probe.https ? "Yes" : "No" %></ul>
+  <ul>Body:
+    <textarea readonly rows=30 cols=50>
+      <%= @http_probe.body %>
+    </textarea>
+  </ul>
+  <ul>
+    Full request:
+    <textarea readonly rows=30 cols=50>
+      <%= @http_probe.http_request %>
+    </textarea>
+  </ul>
+  <ul>
+    Full response:
+    <textarea readonly rows=30 cols=50>
+      <%= @http_probe.http_response %>
+    </textarea>
+  </ul>
+<% end %>
+</ul>

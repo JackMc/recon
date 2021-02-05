@@ -1,0 +1,9 @@
+<h1><%= @domain.fqdn %></h1>
+
+<%= link_to 'Edit', edit_target_domain_url(@domain) %>
+
+<ul>
+  <% @domain.http_probes.each do |probe| %>
+    <li><%= link_to probe.domain.fqdn, target_domain_url(@target, probe.domain) %> status: <%= link_to probe.failed ? "DOWN" : "UP", target_http_probe_url(@target, probe) %></li>
+  <% end %>
+</ul>

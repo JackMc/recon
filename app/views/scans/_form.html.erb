@@ -1,0 +1,4 @@
+<%= form_with model: [@target, @scan] do |form| %>
+  <p><%= form.text_field :description, placeholder: 'Scan description (e.x. subdomain enumeration on example.com)' %></p>
+  <p><%= form.submit %></p>
+<% end %>

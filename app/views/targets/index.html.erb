@@ -1,3 +1,7 @@
+<ul>
 <% @targets.each do |target| %>
-  
+  <li><%= link_to target.name, target_path(target) %></li>
 <% end %>
+</ul>
+
+<%= button_to 'New', new_target_path, method: :get %>

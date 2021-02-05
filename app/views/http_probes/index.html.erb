@@ -1,0 +1,7 @@
+<h2>HTTP Probes for <%= @target.name %></h2>
+
+<ul>
+  <% @target.http_probes.each do |probe| %>
+    <li><%= link_to probe.domain.fqdn, target_domain_url(@target, probe.domain) %> status: <%= link_to probe.failed ? "DOWN" : "UP", target_http_probe_url(@target, probe) %></li>
+  <% end %>
+</ul>

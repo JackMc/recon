@@ -1,0 +1,6 @@
+<h2>Domains</h2>
+<ul>
+  <% @scan.domains.each do |domain| %>
+    <li><%= domain.fqdn %></li>
+  <% end %>
+</ul>
