@@ -12,7 +12,7 @@ default: &default
 development:
   <<: *default
   adapter: mysql2
-  pool: 10
+  pool: 22
   database: recon_development
   username: root
 

@@ -2,6 +2,8 @@ class ScansController < ApplicationController
   before_action :load_target
   before_action :load_scan, only: [:show, :update, :edit, :destroy]
 
+  SCAN_TYPES = [HttpLivelinessScan, DomainEnumerationScan]
+
   def index
     @scans = @target.scans
   end
@@ -11,8 +13,14 @@ class ScansController < ApplicationController
   end
 
   def create
-    @scan = Scan.create!(target: @target, **scan_params)
-    redirect_to(target_path(@scan.target))
+    scan_type = scan_params[:type]
+    # determine from the scan type which form fields to parse
+    if scan_type == "HttpLivelinessScan"
+      HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path], only_new_domains: scan_params[:only_new_domains])
+    elsif scan_type == "DomainEnumerationScan"
+      
+    end
+    redirect_to(target_scans_path(@target))
   end
 
   def show
@@ -42,6 +50,6 @@ class ScansController < ApplicationController
   end
 
   def scan_params
-    params.require(:scan).permit(:id, :description)
+    params.require(:scan).permit(:id, :description, :only_new_domains, :path, :type)
   end
 end

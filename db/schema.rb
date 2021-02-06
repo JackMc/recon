@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_05_041747) do
+ActiveRecord::Schema.define(version: 2021_02_06_004400) do
 
   create_table "domains", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "fqdn"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_02_05_041747) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "target_id"
     t.bigint "source_scan_id"
+    t.boolean "wildcard"
     t.index ["source_scan_id"], name: "index_domains_on_source_scan_id"
     t.index ["target_id", "fqdn"], name: "index_domains_on_target_id_and_fqdn", unique: true, length: { fqdn: 256 }
     t.index ["target_id"], name: "index_domains_on_target_id"

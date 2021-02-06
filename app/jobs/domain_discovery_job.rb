@@ -26,10 +26,11 @@ class DomainDiscoveryJob < ApplicationJob
       
       subdomains.map do |subdomain|
         {
-          fqdn: subdomain,
+          fqdn: subdomain.gsub(/\*\./, ''),
           target_id: target.id,
           source: backend.name,
           source_scan_id: scan.id,
+          wildcard: subdomain.start_with?('*'),
           created_at: Time.now,
           updated_at: Time.now
         }

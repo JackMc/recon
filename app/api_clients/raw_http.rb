@@ -18,7 +18,9 @@ class RawHttp
     @host = host
     @port = port
     @use_https = use_https
-    @headers = {}
+    @headers = {
+      'User-Agent' => 'RawHTTP'
+    }
     @verify = verify
   end
 
@@ -98,7 +100,7 @@ class RawHttp
   def socket
     return @socket if @socket
 
-    raw_socket = TCPSocket.new(host, port)
+    raw_socket = Socket.tcp(host, port, connect_timeout: 5, resolv_timeout: 5)
     return @socket = raw_socket unless use_https
 
     ctx = OpenSSL::SSL::SSLContext.new

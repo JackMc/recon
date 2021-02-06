@@ -21,7 +21,7 @@ class HttpLivelinessProbeJob < ApplicationJob
       failed: false,
       failure_reason: nil
     )
-  rescue Errno::ETIMEDOUT, SocketError, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => e
+  rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => e
     HttpProbe.create!(
       domain: domain,
       url: path,
