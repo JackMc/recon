@@ -9,7 +9,11 @@ Rails.application.routes.draw do
 
     resources :scans
 
-    resources :http_probes
+    resources :http_probes do
+      member do
+        post :screenshot, method: :post
+      end
+    end
 
     resources :domains do
       member do

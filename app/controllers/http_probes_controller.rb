@@ -1,6 +1,6 @@
 class HttpProbesController < ApplicationController
   before_action :load_target
-  before_action :load_http_probe, only: [:show, :update, :edit, :destroy]
+  before_action :load_http_probe, only: [:show, :update, :edit, :destroy, :screenshot]
 
   def index
     @http_probes = HttpProbe.all
@@ -29,6 +29,11 @@ class HttpProbesController < ApplicationController
   def destroy
     @http_probe.destroy!
     redirect_to(target_path(@http_probe.target))
+  end
+
+  def screenshot
+    ScreenshotJob.perform_later(http_probe_id: @http_probe.id)
+    redirect_to(target_http_probe_path(@target, @http_probe))
   end
 
   private

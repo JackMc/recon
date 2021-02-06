@@ -77,10 +77,16 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (3.0.0)
+    cliver (0.3.2)
     concurrent-ruby (1.1.8)
     connection_pool (2.2.3)
     crass (1.0.6)
     erubi (1.10.0)
+    ferrum (0.9)
+      addressable (~> 2.5)
+      cliver (~> 0.3)
+      concurrent-ruby (~> 1.1)
+      websocket-driver (>= 0.6, < 0.8)
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -241,6 +247,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
+  ferrum
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2

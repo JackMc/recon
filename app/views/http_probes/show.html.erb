@@ -4,6 +4,11 @@
 <% if @http_probe.failed %>
   <ul>Failed to make contact: <%= @http_probe.failure_reason %></ul>
 <% else %>
+  <% if @http_probe.screenshot.attached? %>
+    Screenshot:
+    <%= image_tag url_for(@http_probe.screenshot) %>
+  <% end %>
+
   <ul>Response status: <%= @http_probe.status_code %> <%= @http_probe.status_name %></ul>
   <ul>Response URL: <%= @http_probe.url %></ul>
   <ul>HTTPS: <%= @http_probe.https ? "Yes" : "No" %></ul>

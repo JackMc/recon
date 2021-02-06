@@ -16,7 +16,7 @@ class ScansController < ApplicationController
     scan_type = scan_params[:type]
     # determine from the scan type which form fields to parse
     if scan_type == "HttpLivelinessScan"
-      HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path], only_new_domains: scan_params[:only_new_domains])
+      HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path], only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: scan_params[:screenshot_up_urls] == '1')
     elsif scan_type == "DomainEnumerationScan"
       
     end
@@ -50,6 +50,6 @@ class ScansController < ApplicationController
   end
 
   def scan_params
-    params.require(:scan).permit(:id, :description, :only_new_domains, :path, :type)
+    params.require(:scan).permit(:id, :description, :only_new_domains, :path, :type, :screenshot_up_urls)
   end
 end

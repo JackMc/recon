@@ -1,13 +1,13 @@
 class HttpLivelinessProbeJob < ApplicationJob
   queue_as :default
 
-  def perform(domain_id:, scan_id: nil, path: '/')
+  def perform(domain_id:, scan_id: nil, path: '/', screenshot: false)
     domain = Domain.find(domain_id)
 
     http = RawHttp.new(host: domain.fqdn, port: 443, use_https: true, verify: false)
     response = http.send(uri: path)
 
-    HttpProbe.create!(
+    probe = HttpProbe.create!(
       domain: domain,
       http_response: response.raw,
       http_request: response.raw_request,
@@ -21,6 +21,8 @@ class HttpLivelinessProbeJob < ApplicationJob
       failed: false,
       failure_reason: nil
     )
+
+    ScreenshotJob.perform_later(http_probe_id: probe.id) if screenshot
   rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => e
     HttpProbe.create!(
       domain: domain,
