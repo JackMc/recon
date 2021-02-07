@@ -25,4 +25,8 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  adapter: mysql2
+  pool: 22
+  database: recon_production
+  username: recon
+  password: <%= Rails.application.credentials.db_password %>
