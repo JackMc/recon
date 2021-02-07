@@ -7,7 +7,11 @@ Rails.application.routes.draw do
       post :http_liveliness_scan
     end
 
-    resources :scans
+    resources :scans do
+      member do
+        get :screenshot_browser_view
+      end
+    end
 
     resources :http_probes do
       member do

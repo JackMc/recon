@@ -41,7 +41,7 @@ class HttpProbesController < ApplicationController
   def load_http_probe
     @http_probe = @target.http_probes.find(params[:id])
   end
-  
+
   def load_target
     @target = Target.find(params[:target_id])
   end

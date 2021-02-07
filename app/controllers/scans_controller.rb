@@ -1,6 +1,6 @@
 class ScansController < ApplicationController
   before_action :load_target
-  before_action :load_scan, only: [:show, :update, :edit, :destroy]
+  before_action :load_scan, only: [:show, :update, :edit, :destroy, :screenshot_browser_view]
 
   SCAN_TYPES = [HttpLivelinessScan, DomainEnumerationScan]
 
@@ -18,9 +18,13 @@ class ScansController < ApplicationController
     if scan_type == "HttpLivelinessScan"
       HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path], only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: scan_params[:screenshot_up_urls] == '1')
     elsif scan_type == "DomainEnumerationScan"
-      
+
     end
     redirect_to(target_scans_path(@target))
+  end
+
+  def screenshot_browser_view
+    head(:not_found) unless @scan.type == "HttpLivelinessScan"
   end
 
   def show
@@ -44,7 +48,7 @@ class ScansController < ApplicationController
   def load_scan
     @scan = @target.scans.find(params[:id])
   end
-  
+
   def load_target
     @target = Target.find(params[:target_id])
   end

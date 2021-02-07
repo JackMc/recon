@@ -1,0 +1,13 @@
+<ul>
+<% @scan.http_probes.each do |probe| %>
+  <% next unless probe.screenshot.attached? %>
+  <li>
+    <p>
+      <strong><%= probe.domain.fqdn %></strong>
+    </p>
+    <p>
+    <%= image_tag url_for(probe.screenshot) %>
+    </p>
+  </li>
+<% end %>
+</ul>
