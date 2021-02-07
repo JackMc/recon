@@ -1,0 +1,12 @@
+---
+:concurrency: 5
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20
+:queues:
+  - default
+
+#:schedule:
+#  DailyScanJob:
+#    cron: '0 3 * * *'   # Runs when second = 0, every 5 minutes

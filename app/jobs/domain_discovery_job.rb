@@ -5,6 +5,7 @@ class DomainDiscoveryJob < ApplicationJob
 
   def perform(domain_id:)
     seed_domain = Domain.find(domain_id)
+    manual_domain_fqdns = Domain.where(source: 'manual').pluck(:fqdn)
     fqdn = seed_domain.fqdn
     target = seed_domain.target
     domain_objects_for_insert = BACKENDS.map do |backend|
@@ -25,8 +26,11 @@ class DomainDiscoveryJob < ApplicationJob
       )
       
       subdomains.map do |subdomain|
+        cleaned_subdomain = subdomain.gsub(/\*\./, '')
+        next if manual_domain_fqdns.include?(cleaned_subdomain)
+
         {
-          fqdn: subdomain.gsub(/\*\./, ''),
+          fqdn: cleaned_subdomain,
           target_id: target.id,
           source: backend.name,
           source_scan_id: scan.id,
@@ -35,7 +39,7 @@ class DomainDiscoveryJob < ApplicationJob
           updated_at: Time.now
         }
       end
-    end.flatten.uniq
+    end.compact.flatten.uniq
 
     Domain.upsert_all(domain_objects_for_insert)
   end
