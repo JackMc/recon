@@ -1,4 +1,5 @@
 <h2>Probes</h2>
+<%= link_to 'View screenshots', screenshot_browser_view_target_scan_path(@target, @scan) %>
 <ul>
   <% @scan.http_probes.each do |probe| %>
     <li><%= link_to probe.domain.fqdn, target_domain_url(@target, probe.domain) %> status: <%= link_to probe.failed ? "DOWN" : "UP", target_http_probe_url(@target, probe) %> (<%= link_to 'screenshot', screenshot_target_http_probe_path(@target, probe), method: :post %>)</li>

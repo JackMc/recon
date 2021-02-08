@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_143244) do
+ActiveRecord::Schema.define(version: 2021_02_07_235726) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -83,6 +83,21 @@ ActiveRecord::Schema.define(version: 2021_02_06_143244) do
     t.bigint "target_id"
     t.string "type"
     t.index ["seed_type", "seed_id"], name: "index_scans_on_scan_source"
+  end
+
+  create_table "tagged_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "item_type"
+    t.bigint "domain_id"
+    t.bigint "tag_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_id", "tag_id"], name: "index_tagged_items_on_domain_id_and_tag_id", unique: true
+  end
+
+  create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "targets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

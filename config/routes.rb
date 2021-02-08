@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :domains do
       member do
         post :enumerate_subdomains
+        post :mark_as_favourite
       end
     end
   end

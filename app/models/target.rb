@@ -11,4 +11,10 @@ class Target < ApplicationRecord
   def automated_domains
     domains.where.not(source: 'manual')
   end
+
+  def favourite_domains
+    tag = Tag.favourite
+    
+    domains.joins(:tagged_items).where(tagged_items: { tag_id: tag.id })
+  end
 end

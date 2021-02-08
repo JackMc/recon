@@ -3,7 +3,7 @@
   <% next unless probe.screenshot.attached? %>
   <li>
     <p>
-      <strong><%= probe.domain.fqdn %></strong>
+    <strong><%= probe.domain.fqdn %></strong> (<%= link_to 'Mark as favourite', mark_as_favourite_target_domain_path(@target, probe.domain), method: :post %>)
     </p>
     <p>
     <%= image_tag url_for(probe.screenshot) %>

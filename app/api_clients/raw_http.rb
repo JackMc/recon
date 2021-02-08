@@ -9,7 +9,7 @@ class RawHttp
       "<#{status_code} #{status_name} response from #{host}:#{port}>"
     end
   end
-  
+
   STATUS_LINE_REGEX = %r{\AHTTP/1\.1 ([0-9]+) ([A-Za-z0-9 ]+)\r\n}
   HEADER_REGEX = %r{\A([a-zA-Z\-0-9]+): ?(.*)\r\n}
   attr_accessor :host, :port, :use_https, :headers, :verify
@@ -43,6 +43,7 @@ class RawHttp
 
     # HTTP/1.1 200 OK
     status_line = socketgets
+    raise InvalidHttpResponseException, "No status line found" unless STATUS_LINE_REGEX.match?(status_line)
     status_code, status_name = STATUS_LINE_REGEX.match(status_line).captures
     @response.status_name = status_name
     @response.status_code = status_code.to_i
