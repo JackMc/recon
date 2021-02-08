@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class HttpProbe < ApplicationRecord
   belongs_to :domain
   belongs_to :scan, optional: true

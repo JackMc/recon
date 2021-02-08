@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class DomainsController < ApplicationController
   before_action :load_target
   before_action :load_domain, only: [:show, :update, :edit, :enumerate_subdomains, :destroy, :mark_as_favourite]

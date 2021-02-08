@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class DomainDiscoveryJob < ApplicationJob
   queue_as :default
 
@@ -21,10 +22,10 @@ class DomainDiscoveryJob < ApplicationJob
           scan_type: 'subdomain_enumeration',
           seed_domain: fqdn,
           scan_time: time_elapsed,
-          scan_source: backend.name
+          scan_source: backend.name,
         }
       )
-      
+
       subdomains.map do |subdomain|
         cleaned_subdomain = subdomain.gsub(/\*\./, '')
         next if manual_domain_fqdns.include?(cleaned_subdomain)
@@ -36,7 +37,7 @@ class DomainDiscoveryJob < ApplicationJob
           source_scan_id: scan.id,
           wildcard: subdomain.start_with?('*'),
           created_at: Time.now,
-          updated_at: Time.now
+          updated_at: Time.now,
         }
       end
     end.compact.flatten.uniq

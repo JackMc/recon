@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class HttpProbesController < ApplicationController
   before_action :load_target
   before_action :load_http_probe, only: [:show, :update, :edit, :destroy, :screenshot]

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class HttpLivelinessProbeJob < ApplicationJob
   queue_as :default
 

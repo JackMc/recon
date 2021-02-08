@@ -1,9 +1,11 @@
+# frozen_string_literal: true
 class RawHttp
-  class InvalidHttpResponseException < Exception; end
+  class InvalidHttpResponseException < RuntimeError; end
 
   class Response
-    attr_accessor :host, :port, :use_https, :uri, :status_code, :status_name, :headers, :body, :raw_body, :raw, :raw_request
-    alias :status :status_code
+    attr_accessor :host, :port, :use_https, :uri, :status_code, :status_name, :headers, :body, :raw_body, :raw,
+:raw_request
+    alias_method :status, :status_code
 
     def inspect
       "<#{status_code} #{status_name} response from #{host}:#{port}>"
@@ -11,7 +13,7 @@ class RawHttp
   end
 
   STATUS_LINE_REGEX = %r{\AHTTP/1\.1 ([0-9]+) ([A-Za-z0-9 ]+)\r\n}
-  HEADER_REGEX = %r{\A([a-zA-Z\-0-9]+): ?(.*)\r\n}
+  HEADER_REGEX = /\A([a-zA-Z\-0-9]+): ?(.*)\r\n/
   attr_accessor :host, :port, :use_https, :headers, :verify
 
   def initialize(host:, port: 80, use_https: false, verify: true)
@@ -19,7 +21,7 @@ class RawHttp
     @port = port
     @use_https = use_https
     @headers = {
-      'User-Agent' => 'RawHTTP'
+      'User-Agent' => 'RawHTTP',
     }
     @verify = verify
   end
@@ -33,10 +35,10 @@ class RawHttp
     @response.raw = ''
     @response.raw_request = ''
 
-    socketputs "#{method} #{uri} HTTP/1.1"
-    socketputs "Host: #{host}"
+    socketputs("#{method} #{uri} HTTP/1.1")
+    socketputs("Host: #{host}")
     headers.each do |header, value|
-      socketputs "#{header}: #{value}"
+      socketputs("#{header}: #{value}")
     end
     socketputs
     socketputs
@@ -50,8 +52,7 @@ class RawHttp
     response_headers = {}
     raw_request = status_line
 
-
-    while line = socketgets
+    while (line = socketgets)
       raw_request << line
       break if line == "\r\n"
 
@@ -61,10 +62,10 @@ class RawHttp
 
     @response.headers = response_headers
 
-    if content_length = response_headers['content-length']
+    if (content_length = response_headers['content-length'])
       body = socketread(content_length.to_i)
       @response.body = @response.raw_body = body
-    elsif transfer_encoding = response_headers['transfer-encoding']
+    elsif (transfer_encoding = response_headers['transfer-encoding'])
       processed_body = ""
       raw_body = ""
       raise InvalidHttpResponseException,
@@ -87,7 +88,7 @@ class RawHttp
       @response.body = processed_body
       @response.raw_body = raw_body
     elsif @response.status == 204
-      Rails.logger.info "Not parsing response body for headerless 204."
+      Rails.logger.info("Not parsing response body for headerless 204.")
     else
       raise InvalidHttpResponseException, "No Content-Length or Transfer-Encoding"
     end
@@ -109,7 +110,7 @@ class RawHttp
     cert_store.set_default_paths
     ctx.cert_store = cert_store
     ctx.set_params(verify_mode: verify_mode)
-    return @socket = OpenSSL::SSL::SSLSocket.new(raw_socket, ctx).tap do |socket|
+    @socket = OpenSSL::SSL::SSLSocket.new(raw_socket, ctx).tap do |socket|
       socket.sync_close = true
       socket.connect
     end
@@ -129,13 +130,13 @@ class RawHttp
     end
   end
 
-  def socketread(bytes)
-    socket.read(bytes).tap do |bytes|
+  def socketread(numbytes)
+    socket.read(numbytes).tap do |bytes|
       @response.raw << bytes
     end
   end
 
-  def socketputs(str='')
+  def socketputs(str = '')
     @response.raw_request << str
     @response.raw_request << "\r\n"
 

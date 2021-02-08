@@ -14,7 +14,7 @@ class Target < ApplicationRecord
 
   def favourite_domains
     tag = Tag.favourite
-    
+
     domains.joins(:tagged_items).where(tagged_items: { tag_id: tag.id })
   end
 end

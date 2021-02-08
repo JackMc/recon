@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class AddTimestampsToScans < ActiveRecord::Migration[6.1]
   def change
-    change_table :scans do |t|
+    change_table(:scans) do |t|
       t.timestamps(null: true)
     end
   end
