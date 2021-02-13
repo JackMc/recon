@@ -3,9 +3,8 @@ class DailyScanJob < ApplicationJob
 
   def perform
     Target.all.each do |target|
-      HttpLivelinessScanJob.perform_later(target_id: target.id, screenshot_up_urls: true)
       target.domains.where(source: 'manual').each do |domain|
-        DomainDiscoveryJob.perform_later(domain_id: domain.id)
+        DomainDiscoveryJob.perform_later(domain_id: domain.id, post_to_slack: true)
       end
     end
   end

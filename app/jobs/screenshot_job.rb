@@ -5,7 +5,7 @@ class ScreenshotJob < ApplicationJob
   def perform(http_probe_id:)
     http_probe = HttpProbe.find(http_probe_id)
 
-    browser = Ferrum::Browser.new
+    browser = Ferrum::Browser.new(browser_options: { "ignore-certificate-errors" => nil })
     url = "https://#{http_probe.domain.fqdn}#{http_probe.url}"
     browser.goto(url)
     filesafe_website_name_with_extension = "#{url.gsub(%r{[:\./]+}, '_')}.png"

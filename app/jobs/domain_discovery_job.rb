@@ -4,31 +4,26 @@ class DomainDiscoveryJob < ApplicationJob
 
   BACKENDS = [CrtSh]
 
-  def perform(domain_id:)
+  def perform(domain_id:, post_to_slack: false)
     seed_domain = Domain.find(domain_id)
-    manual_domain_fqdns = Domain.where(source: 'manual').pluck(:fqdn)
     fqdn = seed_domain.fqdn
     target = seed_domain.target
-    domain_objects_for_insert = BACKENDS.map do |backend|
-      start_time = Time.now
-      subdomains = backend.subdomains(fqdn)
-      time_elapsed = Time.now - start_time
 
-      scan = DomainEnumerationScan.create!(
-        seed: seed_domain,
-        target: seed_domain.target,
-        description: "#{backend.name} subdomain enumeration scan for #{fqdn}",
-        metadata: {
-          scan_type: 'subdomain_enumeration',
-          seed_domain: fqdn,
-          scan_time: time_elapsed,
-          scan_source: backend.name,
-        }
-      )
+    scan = DomainEnumerationScan.create!(
+      seed: seed_domain,
+      target: seed_domain.target,
+      description: "Subdomain enumeration scan for #{fqdn}",
+      metadata: {
+        scan_type: 'subdomain_enumeration',
+        seed_domain: fqdn,
+      }
+    )
+
+    domain_objects_for_insert  = BACKENDS.map do |backend|
+      subdomains = backend.subdomains(fqdn)
 
       subdomains.map do |subdomain|
         cleaned_subdomain = subdomain.gsub(/\*\./, '')
-        next if manual_domain_fqdns.include?(cleaned_subdomain)
 
         {
           fqdn: cleaned_subdomain,
@@ -42,6 +37,17 @@ class DomainDiscoveryJob < ApplicationJob
       end
     end.compact.flatten.uniq
 
-    Domain.upsert_all(domain_objects_for_insert)
+    Domain.insert_all(domain_objects_for_insert)
+
+    send_results_to_slack(scan) if post_to_slack
+  end
+
+  def send_results_to_slack(scan)
+    return if scan.domains.empty?
+
+    SlackClient.client.chat_postMessage(channel: '#domains', text: <<~MESSAGE)
+New domains discovered for #{scan.seed.fqdn}:
+#{scan.domains.map { |domain| "- #{domain.fqdn}"}.join("\n")}
+MESSAGE
   end
 end

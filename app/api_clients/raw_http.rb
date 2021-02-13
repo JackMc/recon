@@ -32,8 +32,8 @@ class RawHttp
     @response.port = port
     @response.uri = uri
     @response.use_https = use_https
-    @response.raw = ''
-    @response.raw_request = ''
+    @response.raw = StringIO.new
+    @response.raw_request = StringIO.new
 
     socketputs("#{method} #{uri} HTTP/1.1")
     socketputs("Host: #{host}")
@@ -66,8 +66,8 @@ class RawHttp
       body = socketread(content_length.to_i)
       @response.body = @response.raw_body = body
     elsif (transfer_encoding = response_headers['transfer-encoding'])
-      processed_body = ""
-      raw_body = ""
+      processed_body = StringIO.new
+      raw_body = StringIO.new
       raise InvalidHttpResponseException,
         "Unsupported transfer-encoding: #{transfer_encoding}" unless transfer_encoding == 'chunked'
 
@@ -85,14 +85,16 @@ class RawHttp
         length = length_str.to_i(16)
       end
 
-      @response.body = processed_body
-      @response.raw_body = raw_body
+      @response.body = processed_body.string
+      @response.raw_body = raw_body.string
     elsif @response.status == 204
       Rails.logger.info("Not parsing response body for headerless 204.")
     else
       raise InvalidHttpResponseException, "No Content-Length or Transfer-Encoding"
     end
 
+    @response.raw = @response.raw.string
+    @response.raw_request = @response.raw_request.string
     @response
   ensure
     socket&.close
