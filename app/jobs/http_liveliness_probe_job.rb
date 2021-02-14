@@ -41,7 +41,7 @@ class HttpLivelinessProbeJob < ApplicationJob
     )
 
     ScreenshotJob.perform_later(http_probe_id: probe.id) if screenshot
-  rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError => e
+  rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError, Errno::ECONNREFUSED, OpenSSL::SSL::SSLError, Errno::ENETUNREACH, RawHttp::InvalidHttpResponseException => e
     HttpProbe.create!(
       domain: domain,
       url: path,
