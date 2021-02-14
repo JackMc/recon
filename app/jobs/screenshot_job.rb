@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class ScreenshotJob < ApplicationJob
-  queue_as :default
+  queue_as :screenshots
 
   def perform(http_probe_id:)
     http_probe = HttpProbe.find(http_probe_id)

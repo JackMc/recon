@@ -6,6 +6,8 @@ production:
   :concurrency: 20
 :queues:
   - default
+  - screenshots
+  - active_storage
 :schedule:
   DailyScanJob:
     cron: '0 3 * * *'   # Runs when second = 0, every 5 minutes
