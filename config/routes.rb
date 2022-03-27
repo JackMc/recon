@@ -3,6 +3,8 @@ require 'sidekiq/web'
 
 # frozen_string_literal: true
 Rails.application.routes.draw do
+  root 'targets#index'
+
   resources :targets do
     member do
       post :http_liveliness_scan

@@ -47,6 +47,7 @@ class CrtSh
       rescue PG::DuplicatePstatement
         # Do nothing, this is expected depending on where in the connection cycle we are.
       end
+
       results = connection.exec_prepared('subdomains', ["%.#{root_domain}"])
 
       results.map { |row| row["name_value"].split("\n") }.compact.flatten.uniq

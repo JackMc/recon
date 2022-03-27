@@ -24,7 +24,6 @@ class ScansController < ApplicationController
       HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path],
 only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: scan_params[:screenshot_up_urls] == '1')
     elsif scan_type == "DomainEnumerationScan"
-
     end
     redirect_to(target_scans_path(@target))
   end
