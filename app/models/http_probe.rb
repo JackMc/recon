@@ -4,7 +4,7 @@ class HttpProbe < ApplicationRecord
   belongs_to :scan, optional: true
   has_one_attached :screenshot
 
-  def up_status
+  def state
     failed ? "DOWN" : "UP"
   end
 end
