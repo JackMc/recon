@@ -10,7 +10,11 @@ class ScansController < ApplicationController
   end
 
   def new
-    @scan = Scan.new
+    @scan = if params[:duplicate_id]
+              Scan.find(params[:duplicate_id])
+            else
+              Scan.new
+            end
   end
 
   def create

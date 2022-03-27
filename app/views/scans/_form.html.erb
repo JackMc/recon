@@ -1,13 +1,14 @@
 <%= javascript_pack_tag 'scans_form' %>
 
-<%= form_with model: [@target, @scan] do |form| %>
-  <p><%= form.text_field :description, placeholder: 'Scan description (e.x. subdomain enumeration on example.com)' %></p>
+<%= form_with model: [@target, @scan], scope: :scan, url: target_scans_url, html: { action: target_scans_url } do |form| %>
+  <p><%= form.text_field :description, placeholder: 'Scan description (e.x. subdomain enumeration on example.com)', value: @scan.description %></p>
   <%= form.collection_radio_buttons :type, Scan.descendants, :name, :name %>
   <% Scan.descendants.each do |scan_type| %>
     <div class="hidden" id="scan_form_<%= scan_type %>">
       <%= render partial: "#{scan_type.name.underscore}_form", locals: { form: form } %>
     </div>
   <% end %>
+  <%= form.hidden_field(:id) %>
 
-  <p><%= form.submit %></p>
+  <p><%= form.submit(@scan.persisted? ? "Retry" : "New") %></p>
 <% end %>

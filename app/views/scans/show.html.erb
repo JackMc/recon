@@ -2,12 +2,14 @@
 
 <h2>Scan metadata</h2>
 
+
 <ul>
   <% @scan.metadata.each do |k,v| %>
     <li><%= k %>: <%= v %></li>
   <% end %>
 </ul>
 
+<%= link_to 'Retry', new_target_scan_url(@target, duplicate_id: @scan.id) %>
+
 <%= render partial: @scan.type.underscore %>
 
-<%= link_to 'Edit', edit_target_scan_url(@target, @scan) %>
