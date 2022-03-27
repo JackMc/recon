@@ -33,7 +33,7 @@ class DomainsController < ApplicationController
   end
 
   def enumerate_subdomains
-    DomainDiscoveryJob.perform_later(domain_id: @domain.id, post_to_slack: true)
+    SeededDomainDiscoveryJob.perform_later(domain_id: @domain.id, post_to_slack: true)
   end
 
   def mark_as_favourite

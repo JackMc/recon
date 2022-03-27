@@ -24,6 +24,7 @@ class ScansController < ApplicationController
       HttpLivelinessScanJob.perform_later(target_id: @target.id, path: scan_params[:path],
 only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: scan_params[:screenshot_up_urls] == '1')
     elsif scan_type == "DomainEnumerationScan"
+      DomainDiscoveryJob.perform_later(target_id: @target.id, pattern: scan_params[:pattern], description: scan_params[:description], post_to_slack: true)
     end
     redirect_to(target_scans_path(@target))
   end
@@ -64,6 +65,6 @@ only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: sca
   end
 
   def scan_params
-    params.require(:scan).permit(:id, :description, :only_new_domains, :path, :type, :screenshot_up_urls)
+    params.require(:scan).permit(:id, :description, :only_new_domains, :path, :type, :screenshot_up_urls, :pattern)
   end
 end

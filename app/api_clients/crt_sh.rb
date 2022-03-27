@@ -40,6 +40,10 @@ class CrtSh
   SQL
 
   def self.subdomains(root_domain)
+    query("%.#{root_domain}")
+  end
+
+  def self.query(domain_pattern)
     retry_count = 5
     begin
       begin
@@ -48,7 +52,7 @@ class CrtSh
         # Do nothing, this is expected depending on where in the connection cycle we are.
       end
 
-      results = connection.exec_prepared('subdomains', ["%.#{root_domain}"])
+      results = connection.exec_prepared('subdomains', [domain_pattern])
 
       results.map { |row| row["name_value"].split("\n") }.compact.flatten.uniq
     rescue PG::ConnectionBad => e
