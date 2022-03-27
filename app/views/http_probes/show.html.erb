@@ -10,6 +10,7 @@
   <% end %>
 
   <ul>Response status: <%= @http_probe.status_code %> <%= @http_probe.status_name %></ul>
+  <ul>Timestamp: <%= @http_probe.created_at %></ul>
   <ul>Response URL: <%= @http_probe.url %></ul>
   <ul>HTTPS: <%= @http_probe.https ? "Yes" : "No" %></ul>
   <ul>Body:

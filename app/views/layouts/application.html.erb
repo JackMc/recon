@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <h1>Recon</h1>
+    <h1><%= "[DEV] " if Rails.env.development? %>Recon</h1>
     <% flash.each do |key, value| %>
       <div class="alert alert-<%= key %> alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
