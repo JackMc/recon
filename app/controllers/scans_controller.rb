@@ -55,8 +55,7 @@ only_new_domains: scan_params[:only_new_domains] == '1', screenshot_up_urls: sca
     @scan ||= @target.scans.find_by(id: params[:id]).tap do |scan|
       next unless scan.is_a?(HttpLivelinessScan)
 
-      preloader = ActiveRecord::Associations::Preloader.new
-      preloader.preload(scan, http_probes: [:domain, :screenshot_attachment])
+      preloader = ActiveRecord::Associations::Preloader.new(records: [scan], associations: { http_probes: [:domain, :screenshot_attachment] }).call
     end
   end
 
