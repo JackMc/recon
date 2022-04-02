@@ -3,6 +3,7 @@
 <p>
 <%= link_to 'Edit', edit_target_url(@target) %>
 <%= link_to 'Scans', target_scans_path(@target) %>
+<%= link_to 'Scan Schedules', target_scan_schedules_path(@target) %>
 <%= link_to 'Run HTTP liveliness scan on domains', http_liveliness_scan_target_url(@target), method: :post %>
 </p>
 

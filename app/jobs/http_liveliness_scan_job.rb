@@ -2,7 +2,7 @@
 class HttpLivelinessScanJob < ApplicationJob
   queue_as :default
 
-  def perform(target_id:, path: '/', only_new_domains: false, screenshot_up_urls: false)
+  def perform(target_id:, path: '/', only_new_domains: false, screenshot_up_urls: false, domain_scan_source: nil)
     target = Target.find(target_id)
 
     scan = HttpLivelinessScan.create!(
@@ -19,13 +19,16 @@ class HttpLivelinessScanJob < ApplicationJob
       }
     )
 
-    domains = target.domains
+    domains = if domain_scan_source
+                domain_scan_source.domains
+              else
+                target.domains
+              end
 
     domains = domains.filter { |domain| domain.http_probes.count == 0 } if only_new_domains
 
     domains.each do |domain|
-      HttpLivelinessProbeJob.perform_later(domain_id: domain.id, scan_id: scan.id, path: path,
-screenshot: screenshot_up_urls)
+      HttpLivelinessProbeJob.perform_later(domain_id: domain.id, scan_id: scan.id, path: path, screenshot: screenshot_up_urls)
     end
   end
 end

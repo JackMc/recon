@@ -1,0 +1,7 @@
+<ul>
+  <% @scan_schedules.each do |scan_schedule| %>
+    <li><%= link_to scan_schedule.title, target_scan_schedule_url(@target, scan_schedule) %></li>
+  <% end %>
+
+  <%= link_to 'New', new_target_scan_schedule_url(@target) %>
+</ul>

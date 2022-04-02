@@ -1,0 +1,13 @@
+<ul>
+  <li>Title: <%= @scan_schedule.title %></li>
+  <li>Active: <%= @scan_schedule.active %></li>
+  <li>Enumerate Domains: <%= @scan_schedule.enumerate_domains %></li>
+  <li>Domain pattern: <%= @scan_schedule.domain_pattern %></li>
+  <li>Perform HTTP probe: <%= @scan_schedule.http_probe %></li>
+  <li>Screenshot: <%= @scan_schedule.screenshot %></li>
+  <li>Response diff: <%= @scan_schedule.response_diff %></li>
+  <li>Photo diff: <%= @scan_schedule.photo_diff %></li>
+</ul>
+
+<%= link_to 'Edit', edit_target_scan_schedule_url(@target, @scan_schedule) %>
+<%= link_to 'Back', target_scan_schedules_url(@target) %>

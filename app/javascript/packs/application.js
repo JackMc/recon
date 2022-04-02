@@ -11,3 +11,11 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+window.addEventListener("load", () => {
+  document.querySelectorAll("span[data-time]").forEach((span) => {
+    let utcTime = span.dataset.time;
+    // Parse the date into our timezone, add it to innerText. For now, we just add the time unmodified.
+    span.innerText = utcTime;
+  });
+});

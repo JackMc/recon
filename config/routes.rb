@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :scan_schedules
+
     resources :http_probes do
       member do
         post :screenshot, method: :post

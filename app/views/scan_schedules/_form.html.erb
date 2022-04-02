@@ -1,0 +1,57 @@
+<%= form_with model: [@target, @scan_schedule] do |form| %>
+  <p>
+    <%= form.label :title do %>
+      <%= form.text_field :title, placeholder: 'Title' %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :active do %>
+      <%= form.check_box :active %>
+      Active
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :enumerate_domains do %>
+      <%= form.check_box :enumerate_domains %>
+      Enumerate Domains
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.text_field :domain_pattern, placeholder: '%github%' %>
+  </p>
+
+  <p>
+    <%= form.label :http_probe do %>
+      <%= form.check_box :http_probe %>
+      Perform HTTP probe scan on resulting domains
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :screenshot do %>
+      <%= form.check_box :screenshot %>
+      Screenshot
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :response_diff do %>
+      <%= form.check_box :response_diff %>
+      Response diff (not implemented)
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :photo_diff do %>
+      <%= form.check_box :photo_diff %>
+      Photo diff (not implemented)
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
