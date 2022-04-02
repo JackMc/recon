@@ -3,7 +3,7 @@ class ScanSchedulesController < ApplicationController
   before_action :load_scan_schedule, only: [:show, :update, :edit]
 
   def index
-    @scan_schedules = ScanSchedule.all
+    @scan_schedules = ScanSchedule.where(target: @target)
   end
 
   def edit
